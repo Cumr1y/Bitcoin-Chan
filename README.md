@@ -1,5 +1,5 @@
-# Kaori (香織) Discord Bot
-Welcome to Kaori, a powerful and versatile Discord bot built to enhance your server experience! Designed with a focus on functionality and community engagement, Kaori offers a wide range of features including economy management, leveling systems, moderation tools, achievement tracking, and much more. Whether you're looking to gamify your server or maintain order, Kaori has you covered.
+# Bitcoin-Chan Discord Bot
+Welcome Bitcoin-Chan, a powerful and versatile Discord bot built to enhance your server experience! Designed with a focus on functionality and community engagement, Kaori offers a wide range of features including economy management, leveling systems, moderation tools, achievement tracking, and much more. Whether you're looking to gamify your server or maintain order, Kaori has you covered.
 
 ## Table of Contents
 - **Features**
@@ -12,7 +12,7 @@ Welcome to Kaori, a powerful and versatile Discord bot built to enhance your ser
 
 # Features
 ## Economy System
-Kaori comes with a robust economy system where users can earn, spend, and manage virtual currency. Key features include:
+Bitcoin-Chan comes with a robust economy system where users can earn, spend, and manage virtual currency. Key features include:
 - **Earning Money:**
   Users gain currency through activities like chatting or completing tasks.
 - **Shops:**
@@ -72,7 +72,7 @@ nodemon
 ```
 
 # Usage
-Once the bot is online, use the prefix `kaori` followed by a command (e.g., `kaori help`). Invite Kaori to your server using the OAuth2 URL generated from the Discord Developer Portal. Configure settings via commands or our web dashboard (coming soon!).
+Once the bot is online, use the prefix `btc` followed by a command (e.g., `btc help`). Invite Bitcoin-Chan to your server using the OAuth2 URL generated from the Discord Developer Portal. Configure settings via commands or our web dashboard (coming soon!).
 
 # Contributing
 We welcome contributions! To get started:
@@ -85,4 +85,4 @@ We welcome contributions! To get started:
 
 # Support
 - **Issues:** Report bugs or request features on the [Issues page](https://github.com/Cumr1y/KaoriBot/issues)).
-- **Discord:** Join our community server [here](https://discord.gg/myaNUHaT8y) for support and updates.
+- **Discord:** Join our community server [here](https://discord.gg/GrRYUSthrd) for support and updates.
