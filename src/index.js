@@ -13,8 +13,8 @@ app.get('/', (req, res) => {
     res.status(200).send('Bot en línea ✓');
 });
 
-app.listen(PORT, () => {
-    console.log(`Servidor HTTP en puerto ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Servidor HTTP escuchando en ${PORT}`);
 });
 
 const client = new Client({
