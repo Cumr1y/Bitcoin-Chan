@@ -50,7 +50,7 @@ module.exports = {
         const duracion = parsearDuracion(duracionStr);
         if (!duracion) {
             return interaction.reply({
-                content: "Formato de duración inválido. Usa: '2d', '6h', '30m' (días, horas, minutos)",
+                content: "Formato de duración inválido. Usa: '2d', '6h', '30m', '10s' (días, horas, minutos, segundos)",
                 flags: MessageFlags.Ephemeral
             });
         }
@@ -103,9 +103,9 @@ module.exports = {
     },
 };
 
-// Parsear duración (ej: "2d", "6h", "30m")
+// Parsear duración (ej: "2d", "6h", "30m", "10s")
 function parsearDuracion(str) {
-    const match = str.match(/^(\d+)([dhm])$/);
+    const match = str.match(/^(\d+)([dhms])$/);
     if (!match) return null;
 
     const valor = parseInt(match[1]);
@@ -115,6 +115,7 @@ function parsearDuracion(str) {
         case 'd': return valor * 24 * 60 * 60 * 1000; // días
         case 'h': return valor * 60 * 60 * 1000;      // horas
         case 'm': return valor * 60 * 1000;           // minutos
+        case 's': return valor * 1000;                // segundos
         default: return null;
     }
 }
