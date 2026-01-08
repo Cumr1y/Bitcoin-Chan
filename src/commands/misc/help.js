@@ -1,10 +1,12 @@
 const { EmbedBuilder, MessageFlags, StringSelectMenuBuilder, ActionRowBuilder } = require("discord.js");
 const getLocalCommands = require("../../utils/getLocalCommands");
+const { deleted } = require("./previsualizarbienvenida");
 
 module.exports = {
     name: "help",
     description: "Muestra todos los comandos disponibles",
     testOnly: true,
+    deleted: true,
     callback: async (client, interaction) => {
         const localCommands = getLocalCommands();
 

@@ -5,6 +5,7 @@ module.exports = {
     description: "Obtén información sobre el bot y accede al servidor principal",
     dmPermission: true,
     testOnly: true,
+    deleted: true,
     callback: async (client, interaction) => {
         const embed = new EmbedBuilder()
             .setColor("#272727ff")
