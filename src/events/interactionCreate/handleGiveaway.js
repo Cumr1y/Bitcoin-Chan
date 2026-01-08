@@ -1,4 +1,5 @@
 const User = require("../../models/User");
+const Giveaway = require("../../models/Giveaway");
 const { MessageFlags, EmbedBuilder } = require("discord.js");
 
 module.exports = async (client, interaction) => {
@@ -6,9 +7,9 @@ module.exports = async (client, interaction) => {
     if (!interaction.customId.startsWith("giveaway_join_")) return;
 
     const giveawayId = interaction.customId.replace("giveaway_join_", "");
-    const giveaway = client.giveaways?.get(giveawayId);
+    const giveaway = await Giveaway.findOne({ giveawayId });
 
-    if (!giveaway || giveaway.ended) {
+    if (!giveaway || giveaway.estado !== 'activo') {
         return interaction.reply({ content: "Este sorteo ya terminó.", flags: MessageFlags.Ephemeral });
     }
 
@@ -36,16 +37,17 @@ module.exports = async (client, interaction) => {
 
     // Agregar a participantes
     giveaway.participantes.push(interaction.user.id);
+    await giveaway.save();
 
-    // Actualizar embed con nuevo número de participantes
+    // Actualizar embed
     const embed = new EmbedBuilder()
-        .setColor(0x00FF00)
-        .setTitle("🎁 SORTEO DE BTC")
+        .setColor(giveaway.premioTipo === 'BTC' ? 0xF7931A : 0x7289DA)
+        .setTitle(`🎁 SORTEO - ${giveaway.premioTipo}`)
         .addFields(
-            { name: "Premio", value: `${giveaway.premio} BTC`, inline: true },
+            { name: "Premio", value: giveaway.premioValor, inline: true },
             { name: "Costo", value: `${giveaway.costo} BTC`, inline: true },
             { name: "Ganadores", value: `${giveaway.ganadores}`, inline: true },
-            { name: "Termina en", value: `<t:${Math.floor(giveaway.finTime / 1000)}:R>`, inline: false }
+            { name: "Termina en", value: `<t:${Math.floor(giveaway.fechaFin.getTime() / 1000)}:R>`, inline: false }
         )
         .setFooter({ text: `Participantes: ${giveaway.participantes.length}` });
 
@@ -61,3 +63,4 @@ module.exports = async (client, interaction) => {
         flags: MessageFlags.Ephemeral,
     });
 };
+
