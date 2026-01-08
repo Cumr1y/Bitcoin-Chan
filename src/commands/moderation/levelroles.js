@@ -1,8 +1,8 @@
 const {
-    SlashCommandBuilder,
     PermissionFlagsBits,
     EmbedBuilder,
     MessageFlags,
+    ApplicationCommandOptionType,
 } = require("discord.js");
 const LevelRole = require("../../models/LevelRole");
 
@@ -11,50 +11,54 @@ module.exports = {
     description: "Gestiona los roles que se otorgan por nivel",
     deleted: false,
     testOnly: false,
-    options: new (require("discord.js")).SlashCommandBuilder()
-        .addSubcommand((subcommand) =>
-            subcommand
-                .setName("add")
-                .setDescription("Añade un rol para un nivel específico")
-                .addIntegerOption((option) =>
-                    option
-                        .setName("level")
-                        .setDescription("El nivel requerido")
-                        .setRequired(true)
-                        .setMinValue(1)
-                        .setMaxValue(999)
-                )
-                .addRoleOption((option) =>
-                    option
-                        .setName("rol")
-                        .setDescription("El rol a otorgar")
-                        .setRequired(true)
-                )
-        )
-        .addSubcommand((subcommand) =>
-            subcommand
-                .setName("remove")
-                .setDescription("Remueve el rol de un nivel")
-                .addIntegerOption((option) =>
-                    option
-                        .setName("level")
-                        .setDescription("El nivel a remover")
-                        .setRequired(true)
-                        .setMinValue(1)
-                        .setMaxValue(999)
-                )
-        )
-        .addSubcommand((subcommand) =>
-            subcommand
-                .setName("list")
-                .setDescription("Muestra todos los roles configurados por nivel")
-        )
-        .addSubcommand((subcommand) =>
-            subcommand
-                .setName("sync")
-                .setDescription("Sincroniza todos los usuarios existentes con sus roles de nivel")
-        )
-        .toJSON(),
+    options: [
+        {
+            name: "add",
+            description: "Añade un rol para un nivel específico",
+            type: ApplicationCommandOptionType.Subcommand,
+            options: [
+                {
+                    name: "level",
+                    description: "El nivel requerido",
+                    type: ApplicationCommandOptionType.Integer,
+                    required: true,
+                    min_value: 1,
+                    max_value: 999
+                },
+                {
+                    name: "rol",
+                    description: "El rol a otorgar",
+                    type: ApplicationCommandOptionType.Role,
+                    required: true
+                }
+            ]
+        },
+        {
+            name: "remove",
+            description: "Remueve el rol de un nivel",
+            type: ApplicationCommandOptionType.Subcommand,
+            options: [
+                {
+                    name: "level",
+                    description: "El nivel a remover",
+                    type: ApplicationCommandOptionType.Integer,
+                    required: true,
+                    min_value: 1,
+                    max_value: 999
+                }
+            ]
+        },
+        {
+            name: "list",
+            description: "Muestra todos los roles configurados por nivel",
+            type: ApplicationCommandOptionType.Subcommand
+        },
+        {
+            name: "sync",
+            description: "Sincroniza todos los usuarios existentes con sus roles de nivel",
+            type: ApplicationCommandOptionType.Subcommand
+        }
+    ],
     callback: async (client, interaction) => {
         if (!interaction.inGuild()) {
             return interaction.reply({
