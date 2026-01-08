@@ -13,19 +13,19 @@ module.exports = async (client, message) => {
 
     if (client.activeDrops.has(message.channel.id)) return;
 
-    // Probabilidad: 0.5% por cada mensaje (muy raro)
-    const dropChance = 0.005;
+    // Probabilidad: 0.25% por cada mensaje (muy raro)
+    const dropChance = 0.0025;
     
     if (Math.random() < dropChance) {
-        // Drop disparado - Mucho más valioso
+        // Drop disparado
         
         let amount;
         if (Math.random() < 0.85) {
-            // 85% de chance: Drop normal pero más valioso (100-500 BTC)
-            amount = Math.floor(Math.random() * 400) + 100;
+            // 85% de chance: Drop normal (50-300 BTC)
+            amount = Math.floor(Math.random() * 250) + 50;
         } else {
-            // 15% de chance: Drop raro (500-2000 BTC)
-            amount = Math.floor(Math.random() * 1500) + 500;
+            // 15% de chance: Drop raro (300-1000 BTC)
+            amount = Math.floor(Math.random() * 700) + 300;
         }
 
         const embed = new EmbedBuilder()
