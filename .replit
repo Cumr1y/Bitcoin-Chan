@@ -18,8 +18,11 @@ author = "agent"
 task = "workflow.run"
 args = "Discord Bot"
 
-[ports]
-3000 = {name = "Bot HTTP", allowPublic = true}[[workflows.workflow]]
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Discord Bot"
+
+[[workflows.workflow]]
 name = "Discord Bot"
 author = "agent"
 
