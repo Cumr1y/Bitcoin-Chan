@@ -1,8 +1,21 @@
 require('dotenv').config();
+const express = require('express');
 const { Client, IntentsBitField, Collection, ChannelType } = require('discord.js');
 const mongoose = require('mongoose');
 const eventHandler = require('./handlers/eventHandler');
 const DropChannel = require('./models/DropChannel');
+
+// Servidor HTTP para mantener el bot activo
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.status(200).send('Bot en línea ✓');
+});
+
+app.listen(PORT, () => {
+    console.log(`Servidor HTTP en puerto ${PORT}`);
+});
 
 const client = new Client({
     intents: [

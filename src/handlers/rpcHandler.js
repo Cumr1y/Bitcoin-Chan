@@ -7,14 +7,20 @@ let currentRpcIndex = 0;
 let bitcoinPrice = 'Cargando...';
 let totalMembers = 0;
 
-// Obtener precio del Bitcoin cada 5 minutos
+// Obtener precio del Bitcoin cada 15 minutos (aumentado para evitar rate limit)
 const fetchBitcoinPrice = async () => {
     try {
-        const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+        const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd', {
+            timeout: 5000
+        });
         bitcoinPrice = `${response.data.bitcoin.usd.toLocaleString('en-US', { maximumFractionDigits: 2 })} USD`;
     } catch (error) {
-        console.error('Error obteniendo precio de Bitcoin:', error.message);
-        bitcoinPrice = 'No disponible';
+        if (error.response?.status === 429) {
+            console.warn('Rate limitado por CoinGecko, esperando próxima actualización...');
+        } else {
+            console.error('Error obteniendo precio de Bitcoin:', error.message);
+        }
+        // Mantener el precio anterior si falla
     }
 };
 
@@ -39,8 +45,8 @@ const setupRPC = (client) => {
     fetchBitcoinPrice();
     fetchTotalMembers();
     
-    // Actualizar Bitcoin cada 5 minutos
-    setInterval(fetchBitcoinPrice, 5 * 60 * 1000);
+    // Actualizar Bitcoin cada 15 minutos (evita rate limit)
+    setInterval(fetchBitcoinPrice, 15 * 60 * 1000);
     // Actualizar miembros cada 2 minutos (antes era 10)
     setInterval(fetchTotalMembers, 2 * 60 * 1000);
 
