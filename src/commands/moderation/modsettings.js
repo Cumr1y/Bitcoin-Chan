@@ -10,6 +10,7 @@ module.exports = {
   name: "modsettings",
   description: "Configura el canal de drops para mods.",
   deleted: true,
+  permissionsRequired: [PermissionFlagsBits.ManageChannels],
   options: [
     {
       name: "channel",

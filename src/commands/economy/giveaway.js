@@ -5,6 +5,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags
 module.exports = {
     name: "giveaway",
     description: "Crea un sorteo",
+    permissionsRequired: ["MANAGE_MESSAGES", "MANAGE_GUILD"],
     options: [
         {
             name: "premio",

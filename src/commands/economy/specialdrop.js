@@ -8,6 +8,7 @@ module.exports = {
     description: 'Genera un drop especial de BTC (Solo Developer)',
     testOnly: true,
     deleted: true,
+    devOnly: true,
     options: [
         {
             name: 'channel',

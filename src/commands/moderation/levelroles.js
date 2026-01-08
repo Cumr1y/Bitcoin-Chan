@@ -11,6 +11,7 @@ module.exports = {
     description: "Gestiona los roles que se otorgan por nivel",
     deleted: false,
     testOnly: false,
+    permissionsRequired: [PermissionFlagsBits.ManageRoles],
     options: [
         {
             name: "add",

@@ -5,6 +5,7 @@ module.exports = {
   description: "Previsualiza el mensaje de bienvenida",
   deleted: true,
   testOnly: true,
+  devOnly: true,
   callback: async (client, interaction) => {
     try {
       // Crear embed igual al que se envía en guildMemberAdd

@@ -11,6 +11,7 @@ module.exports = {
     description: "Elimina datos de usuarios que ya no están en el servidor",
     deleted: false,
     testOnly: false,
+    permissionsRequired: [PermissionFlagsBits.Administrator],
     callback: async (client, interaction) => {
         if (!interaction.inGuild()) {
             return interaction.reply({
