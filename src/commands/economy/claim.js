@@ -6,15 +6,18 @@ module.exports = {
     description: "Reclama un drop de BTC en el canal.",
     testOnly: true,
     callback: async (client, interaction) => {
+        // Defer reply para evitar timeout en operaciones largas
+        await interaction.deferReply({ ephemeral: true });
+
         if (!interaction.inGuild()) {
-            return interaction.reply({ content: "Solo puedes usar este comando en un servidor.", flags: MessageFlags.Ephemeral });
+            return interaction.editReply({ content: "Solo puedes usar este comando en un servidor." });
         }
 
         const dropChannelId = client.dropChannels.get(interaction.guild.id);
         const drop = client.activeDrops.get(dropChannelId);
 
         if (!drop || drop.claimed) {
-            return interaction.reply({ content: "No hay ningún drop activo en este canal para reclamar.", flags: MessageFlags.Ephemeral });
+            return interaction.editReply({ content: "No hay ningún drop activo en este canal para reclamar." });
         }
 
         const userId = interaction.user.id;
@@ -44,7 +47,7 @@ module.exports = {
 
         client.activeDrops.delete(dropChannelId);
 
-        await interaction.reply(`¡Felicidades! ${interaction.user.username} ha reclamado el drop de **${drop.amount.toLocaleString()} BTC**.`);
+        await interaction.editReply(`¡Felicidades! ${interaction.user.username} ha reclamado el drop de **${drop.amount.toLocaleString()} BTC**.`);
         const replyMsg = await interaction.fetchReply();
         setTimeout(() => replyMsg.delete().catch(console.error), 5000);
     },
