@@ -14,16 +14,16 @@ module.exports = {
             required: true,
         },
         {
-            name: "costo",
-            description: "Costo en BTC para entrar (default: 0 = gratis)",
-            type: 4,
-            required: false,
-        },
-        {
             name: "duracion",
             description: "Duración (ej: '2d' para 2 días, '6h' para 6 horas, '30m' para 30 minutos)",
             type: 3,
             required: true,
+        },
+        {
+            name: "costo",
+            description: "Costo en BTC para entrar (default: 0 = gratis)",
+            type: 4,
+            required: false,
         },
         {
             name: "ganadores",
