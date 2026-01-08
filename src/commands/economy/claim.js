@@ -7,7 +7,7 @@ module.exports = {
     testOnly: true,
     callback: async (client, interaction) => {
         // Defer reply para evitar timeout en operaciones largas
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         if (!interaction.inGuild()) {
             return interaction.editReply({ content: "Solo puedes usar este comando en un servidor." });
@@ -37,18 +37,23 @@ module.exports = {
 
         try {
             const dropChannel = interaction.guild.channels.cache.get(dropChannelId);
-            if (dropChannel) {
-                const message = await dropChannel.messages.fetch(drop.messageId);
-                await message.delete();
+            if (dropChannel && drop.messageId) {
+                try {
+                    const message = await dropChannel.messages.fetch(drop.messageId).catch(() => null);
+                    if (message) {
+                        await message.delete().catch(() => null);
+                    }
+                } catch (fetchError) {
+                    // El mensaje ya no existe, ignorar silenciosamente
+                }
             }
         } catch (error) {
-            console.error("Error eliminando el mensaje del drop:", error);
+            console.error("Error eliminando el mensaje del drop:", error.message);
         }
 
         client.activeDrops.delete(dropChannelId);
 
-        await interaction.editReply(`¡Felicidades! ${interaction.user.username} ha reclamado el drop de **${drop.amount.toLocaleString()} BTC**.`);
-        const replyMsg = await interaction.fetchReply();
-        setTimeout(() => replyMsg.delete().catch(console.error), 5000);
+        const response = await interaction.editReply(`¡Felicidades! ${interaction.user.username} ha reclamado el drop de **${drop.amount.toLocaleString()} BTC**.`);
+        setTimeout(() => response.delete().catch(() => null), 5000);
     },
 };
