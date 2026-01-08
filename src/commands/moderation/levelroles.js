@@ -207,9 +207,11 @@ module.exports = {
                         }
 
                         // Otorgar rol del nivel actual
-                        const levelRole = allLevelRoles.find(
-                            (lr) => lr.level === userLevel.level
-                        );
+                        // Buscar el rol más alto que sea <= al nivel del usuario
+                        const levelRole = allLevelRoles
+                            .filter((lr) => lr.level <= userLevel.level)
+                            .sort((a, b) => b.level - a.level)[0];
+                        
                         if (levelRole) {
                             const role = await interaction.guild.roles.fetch(
                                 levelRole.roleId

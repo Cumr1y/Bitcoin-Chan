@@ -57,10 +57,10 @@ module.exports = async (client, message) => {
                     }
 
                     // Otorgar rol del nivel actual
-                    const levelRole = await LevelRole.findOne({
-                        guildId: message.guild.id,
-                        level: level.level,
-                    });
+                    // Buscar el rol más alto que sea <= al nivel del usuario
+                    const levelRole = allLevelRoles
+                        .filter((lr) => lr.level <= level.level)
+                        .sort((a, b) => b.level - a.level)[0];
 
                     if (levelRole) {
                         const role = await message.guild.roles.fetch(levelRole.roleId);
