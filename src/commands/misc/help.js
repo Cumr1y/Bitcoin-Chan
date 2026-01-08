@@ -1,4 +1,9 @@
-const { EmbedBuilder, MessageFlags, StringSelectMenuBuilder, ActionRowBuilder } = require("discord.js");
+const {
+    EmbedBuilder,
+    MessageFlags,
+    StringSelectMenuBuilder,
+    ActionRowBuilder,
+} = require("discord.js");
 const getLocalCommands = require("../../utils/getLocalCommands");
 const { deleted } = require("./previsualizarbienvenida");
 
@@ -12,9 +17,9 @@ module.exports = {
 
         // Agrupar comandos por categoría basado en una propiedad o lógica
         const categories = {
-            "economia": { emoji: "💰", nombre: "Economía", comandos: [] },
-            "moderacion": { emoji: "🛡️", nombre: "Moderación", comandos: [] },
-            "miscelanea": { emoji: "🎯", nombre: "Miscelánea", comandos: [] }
+            economia: { emoji: "💰", nombre: "Economía", comandos: [] },
+            moderacion: { emoji: "🛡️", nombre: "Moderación", comandos: [] },
+            miscelanea: { emoji: "🎯", nombre: "Miscelánea", comandos: [] },
         };
 
         for (const command of localCommands) {
@@ -27,9 +32,17 @@ module.exports = {
             // Determinar categoría basada en el nombre del comando
             let categoryKey = "miscelanea";
 
-            if (["claim", "daily", "level", "profile", "specialdrop"].includes(command.name)) {
+            if (
+                ["claim", "daily", "level", "profile", "specialdrop"].includes(
+                    command.name,
+                )
+            ) {
                 categoryKey = "economia";
-            } else if (["ban", "kick", "clear", "modsettings", "updatejoins"].includes(command.name)) {
+            } else if (
+                ["ban", "kick", "clear", "modsettings", "updatejoins"].includes(
+                    command.name,
+                )
+            ) {
                 categoryKey = "moderacion";
             }
 
@@ -47,7 +60,7 @@ module.exports = {
                 selectMenu.addOptions({
                     label: `${category.emoji} ${category.nombre}`,
                     value: key,
-                    description: `${category.comandos.length} comandos disponibles`
+                    description: `${category.comandos.length} comandos disponibles`,
                 });
             }
         }
@@ -56,11 +69,25 @@ module.exports = {
         const welcomeEmbed = new EmbedBuilder()
             .setColor("#0099ff")
             .setTitle("📚 Centro de Ayuda")
-            .setDescription("Selecciona una categoría en el menú desplegable para ver los comandos disponibles.")
+            .setDescription(
+                "Selecciona una categoría en el menú desplegable para ver los comandos disponibles.",
+            )
             .addFields(
-                { name: "💰 Economía", value: `${categories.economia.comandos.length} comandos`, inline: true },
-                { name: "🛡️ Moderación", value: `${categories.moderacion.comandos.length} comandos`, inline: true },
-                { name: "🎯 Miscelánea", value: `${categories.miscelanea.comandos.length} comandos`, inline: true }
+                {
+                    name: "💰 Economía",
+                    value: `${categories.economia.comandos.length} comandos`,
+                    inline: true,
+                },
+                {
+                    name: "🛡️ Moderación",
+                    value: `${categories.moderacion.comandos.length} comandos`,
+                    inline: true,
+                },
+                {
+                    name: "🎯 Miscelánea",
+                    value: `${categories.miscelanea.comandos.length} comandos`,
+                    inline: true,
+                },
             );
 
         // Crear action row con el select menu
@@ -69,13 +96,15 @@ module.exports = {
         // Responder
         await interaction.reply({
             embeds: [welcomeEmbed],
-            components: [actionRow]
+            components: [actionRow],
         });
 
         // Configurar el collector para las interacciones del select menu
         const collector = interaction.channel.createMessageComponentCollector({
-            filter: (i) => i.user.id === interaction.user.id && i.customId === "help_select",
-            time: 300000 // 5 minutos
+            filter: (i) =>
+                i.user.id === interaction.user.id &&
+                i.customId === "help_select",
+            time: 300000, // 5 minutos
         });
 
         collector.on("collect", async (selectInteraction) => {
@@ -85,7 +114,7 @@ module.exports = {
             if (!category || category.comandos.length === 0) {
                 await selectInteraction.reply({
                     content: "No hay comandos en esta categoría.",
-                    flags: MessageFlags.Ephemeral
+                    flags: MessageFlags.Ephemeral,
                 });
                 return;
             }
@@ -107,12 +136,12 @@ module.exports = {
 
             await selectInteraction.reply({
                 embeds: [categoryEmbed],
-                flags: MessageFlags.Ephemeral
+                flags: MessageFlags.Ephemeral,
             });
         });
 
         collector.on("end", () => {
             // El collector se termina después de 5 minutos
         });
-    }
+    },
 };
