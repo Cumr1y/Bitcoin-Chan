@@ -1,8 +1,14 @@
 const { devs, testServer } = require("../../../config.json");
 const getLocalCommands = require("../../utils/getLocalCommands");
 const { MessageFlags } = require("discord.js");
+const handleGiveaway = require("./handleGiveaway");
 
 module.exports = async (client, interaction) => {
+  // Manejar botones de giveaway
+  if (interaction.isButton()) {
+    return await handleGiveaway(client, interaction);
+  }
+
   if (!interaction.isChatInputCommand()) return;
 
   const localCommands = getLocalCommands();
