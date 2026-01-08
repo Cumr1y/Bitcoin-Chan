@@ -9,12 +9,24 @@ const DropChannel = require('./models/DropChannel');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
+    console.log('GET / - Solicitud recibida');
     res.status(200).send('Bot en línea ✓');
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Servidor HTTP escuchando en ${PORT}`);
+app.use((req, res) => {
+    console.log(`${req.method} ${req.path} - No encontrada`);
+    res.status(404).send('Ruta no encontrada');
+});
+
+const server = app.listen(PORT, '0.0.0.0', () => {
+    console.log(`✅ Servidor HTTP escuchando en puerto ${PORT}`);
+});
+
+server.on('error', (err) => {
+    console.error(`❌ Error en servidor HTTP:`, err);
 });
 
 const client = new Client({
