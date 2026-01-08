@@ -15,9 +15,9 @@ module.exports = {
         },
         {
             name: "costo",
-            description: "Costo en BTC para entrar",
+            description: "Costo en BTC para entrar (default: 0 = gratis)",
             type: 4,
-            required: true,
+            required: false,
         },
         {
             name: "duracion",
@@ -38,12 +38,12 @@ module.exports = {
         }
 
         const premio = interaction.options.getString("premio");
-        const costo = interaction.options.getInteger("costo");
+        const costo = interaction.options.getInteger("costo") || 0;
         const duracionStr = interaction.options.getString("duracion");
         const ganadores = Math.min(interaction.options.getInteger("ganadores") || 1, 10);
 
-        if (costo <= 0) {
-            return interaction.reply({ content: "El costo debe ser mayor a 0.", flags: MessageFlags.Ephemeral });
+        if (costo < 0) {
+            return interaction.reply({ content: "El costo no puede ser negativo.", flags: MessageFlags.Ephemeral });
         }
 
         // Parsear duración
