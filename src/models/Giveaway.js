@@ -4,9 +4,7 @@ const giveawaySchema = new mongoose.Schema({
     giveawayId: { type: String, required: true, unique: true },
     guildId: { type: String, required: true },
     creatorId: { type: String, required: true },
-    premioTipo: { type: String, enum: ['BTC', 'NITRO', 'STEAM', 'LOL_RP', 'GENSHIN', 'OTRO'], required: true },
-    premioValor: { type: String, required: true }, // "100 BTC", "3 meses Nitro", "60 USD Steam", etc
-    premioDescripcion: { type: String }, // Descripción adicional
+    premio: { type: String, required: true }, // Texto libre: "100 BTC", "Nitro 3 meses", etc
     costo: { type: Number, required: true }, // Costo en BTC para entrar
     ganadores: { type: Number, default: 1, max: 10 },
     participantes: [{ type: String }], // Array de IDs de usuarios

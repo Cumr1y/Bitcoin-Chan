@@ -2,22 +2,13 @@ const User = require("../../models/User");
 const Giveaway = require("../../models/Giveaway");
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require("discord.js");
 
-const TIPOS_PREMIO = ['BTC', 'NITRO', 'STEAM', 'LOL_RP', 'GENSHIN', 'OTRO'];
-
 module.exports = {
     name: "giveaway",
     description: "Crea un sorteo",
     options: [
         {
-            name: "tipo",
-            description: "Tipo de premio",
-            type: 3,
-            required: true,
-            choices: TIPOS_PREMIO.map(t => ({ name: t, value: t }))
-        },
-        {
-            name: "valor",
-            description: "Valor/descripción del premio (ej: '100 BTC', '3 meses Nitro')",
+            name: "premio",
+            description: "Descripción del premio (ej: '100 BTC', 'Nitro 3 meses', 'PS5')",
             type: 3,
             required: true,
         },
@@ -39,24 +30,16 @@ module.exports = {
             type: 3,
             required: true,
         },
-        {
-            name: "descripcion",
-            description: "Descripción adicional del premio (opcional)",
-            type: 3,
-            required: false,
-        },
     ],
     callback: async (client, interaction) => {
         if (!interaction.inGuild()) {
             return interaction.reply({ content: "Solo en servidores.", flags: MessageFlags.Ephemeral });
         }
 
-        const tipo = interaction.options.getString("tipo");
-        const valor = interaction.options.getString("valor");
+        const premio = interaction.options.getString("premio");
         const costo = interaction.options.getInteger("costo");
         const duracionStr = interaction.options.getString("duracion");
         const ganadores = Math.min(interaction.options.getInteger("ganadores") || 1, 10);
-        const descripcion = interaction.options.getString("descripcion");
 
         if (costo <= 0) {
             return interaction.reply({ content: "El costo debe ser mayor a 0.", flags: MessageFlags.Ephemeral });
@@ -79,9 +62,7 @@ module.exports = {
             giveawayId,
             guildId: interaction.guild.id,
             creatorId: interaction.user.id,
-            premioTipo: tipo,
-            premioValor: valor,
-            premioDescripcion: descripcion,
+            premio,
             costo,
             ganadores,
             fechaFin,
@@ -92,21 +73,16 @@ module.exports = {
 
         // Crear embed
         const embed = new EmbedBuilder()
-            .setColor(tipo === 'BTC' ? 0xF7931A : 0x7289DA)
-            .setTitle(`🎁 SORTEO - ${tipo}`)
+            .setColor(0x7289DA)
+            .setTitle("🎁 SORTEO")
             .addFields(
-                { name: "Premio", value: valor, inline: true },
+                { name: "Premio", value: premio, inline: true },
                 { name: "Costo", value: `${costo} BTC`, inline: true },
                 { name: "Ganadores", value: `${ganadores}`, inline: true },
                 { name: "Creador", value: `${interaction.user}`, inline: false },
                 { name: "Termina en", value: `<t:${Math.floor(fechaFin.getTime() / 1000)}:R>`, inline: false }
-            );
-
-        if (descripcion) {
-            embed.addFields({ name: "Descripción", value: descripcion, inline: false });
-        }
-
-        embed.setFooter({ text: `Participantes: 0` });
+            )
+            .setFooter({ text: `Participantes: 0` });
 
         const button = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
@@ -185,7 +161,7 @@ async function finalizarSorteo(client, giveawayId) {
             .setColor(0xFFD700)
             .setTitle("🏆 Sorteo Finalizado")
             .addFields(
-                { name: "Premio", value: giveaway.premioValor, inline: true },
+                { name: "Premio", value: giveaway.premio, inline: true },
                 { name: "Ganadores", value: ganadores.map(id => `<@${id}>`).join("\n") || "Ninguno", inline: false },
                 { name: "Participantes", value: `${giveaway.participantes.length}`, inline: true }
             );

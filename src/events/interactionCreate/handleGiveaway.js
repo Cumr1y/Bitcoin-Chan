@@ -41,10 +41,10 @@ module.exports = async (client, interaction) => {
 
     // Actualizar embed
     const embed = new EmbedBuilder()
-        .setColor(giveaway.premioTipo === 'BTC' ? 0xF7931A : 0x7289DA)
-        .setTitle(`🎁 SORTEO - ${giveaway.premioTipo}`)
+        .setColor(0x7289DA)
+        .setTitle("🎁 SORTEO")
         .addFields(
-            { name: "Premio", value: giveaway.premioValor, inline: true },
+            { name: "Premio", value: giveaway.premio, inline: true },
             { name: "Costo", value: `${giveaway.costo} BTC`, inline: true },
             { name: "Ganadores", value: `${giveaway.ganadores}`, inline: true },
             { name: "Termina en", value: `<t:${Math.floor(giveaway.fechaFin.getTime() / 1000)}:R>`, inline: false }
