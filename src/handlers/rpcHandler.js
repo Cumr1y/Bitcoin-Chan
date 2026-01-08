@@ -18,11 +18,11 @@ const fetchBitcoinPrice = async () => {
     }
 };
 
-// Obtener cantidad de miembros ayudados
+// Obtener cantidad de miembros ayudados (usuarios únicos)
 const fetchTotalMembers = async () => {
     try {
-        const count = await User.countDocuments();
-        totalMembers = count;
+        const count = await User.distinct('userId');
+        totalMembers = count.length;
     } catch (error) {
         console.error('Error contando miembros:', error.message);
         totalMembers = 0;
@@ -41,8 +41,8 @@ const setupRPC = (client) => {
     
     // Actualizar Bitcoin cada 5 minutos
     setInterval(fetchBitcoinPrice, 5 * 60 * 1000);
-    // Actualizar miembros cada 10 minutos
-    setInterval(fetchTotalMembers, 10 * 60 * 1000);
+    // Actualizar miembros cada 2 minutos (antes era 10)
+    setInterval(fetchTotalMembers, 2 * 60 * 1000);
 
     const updateRPC = () => {
         try {
