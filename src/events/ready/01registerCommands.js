@@ -38,7 +38,8 @@ module.exports = async (client) => {
             dm_permission: dmPermission !== false,
           });
 
-          console.log(`🔁 Comando actualizado: "${name}".`);
+          // Silenciar actualizaciones rutinarias
+          // console.log(`🔁 Comando actualizado: "${name}".`);
         }
       } else {
         if (localCommand.deleted) {
