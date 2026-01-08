@@ -202,7 +202,7 @@ module.exports = {
                                     await member.roles.remove(role);
                                 }
                             } catch (e) {
-                                // Ignorar si el rol no existe
+                                console.error(`Error removiendo rol ${lr.roleId}:`, e.message);
                             }
                         }
 
@@ -213,17 +213,24 @@ module.exports = {
                             .sort((a, b) => b.level - a.level)[0];
                         
                         if (levelRole) {
-                            const role = await interaction.guild.roles.fetch(
-                                levelRole.roleId
-                            );
-                            if (role) {
-                                await member.roles.add(role);
+                            try {
+                                const role = await interaction.guild.roles.fetch(
+                                    levelRole.roleId
+                                );
+                                if (role) {
+                                    await member.roles.add(role);
+                                    console.log(`✅ ${member.user.username} - Nivel ${userLevel.level}: Rol ${role.name} asignado`);
+                                } else {
+                                    console.error(`❌ Rol ${levelRole.roleId} no encontrado para ${member.user.username}`);
+                                }
+                            } catch (e) {
+                                console.error(`❌ Error asignando rol a ${member.user.username}:`, e.message);
                             }
                         }
 
                         successCount++;
                     } catch (error) {
-                        // Ignorar errores de usuarios que no existen
+                        console.error(`Error procesando usuario ${userLevel.userId}:`, error.message);
                     }
 
                     processedUsers++;
