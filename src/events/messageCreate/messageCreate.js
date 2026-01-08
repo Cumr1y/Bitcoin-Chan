@@ -13,8 +13,8 @@ module.exports = async (client, message) => {
 
     if (client.activeDrops.has(message.channel.id)) return;
 
-    // Probabilidad fija de 5% por cada mensaje
-    const dropChance = 0.05;
+    // Probabilidad fija de 2.5% por cada mensaje
+    const dropChance = 0.025;
     
     if (Math.random() < dropChance) {
         // Drop disparado

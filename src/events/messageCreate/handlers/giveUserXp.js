@@ -1,4 +1,5 @@
 const Level = require("../../../models/Level");
+const LevelRole = require("../../../models/LevelRole");
 const calculateLevelXp = require("../../../utils/calculateLevelXp");
 const cooldowns = new Set();
 
@@ -35,6 +36,44 @@ module.exports = async (client, message) => {
                 level.level += 1;
 
                 message.channel.send(`${message.member} ha subido al **nivel ${level.level}**.`);
+
+                // Otorgar rol del nuevo nivel y remover anteriores
+                try {
+                    // Obtener todos los roles configurados para este servidor
+                    const allLevelRoles = await LevelRole.find({
+                        guildId: message.guild.id,
+                    }).sort({ level: 1 });
+
+                    // Remover todos los roles de nivel
+                    for (const lr of allLevelRoles) {
+                        try {
+                            const role = await message.guild.roles.fetch(lr.roleId);
+                            if (role && message.member.roles.cache.has(role.id)) {
+                                await message.member.roles.remove(role);
+                            }
+                        } catch (e) {
+                            // Ignorar si el rol no existe
+                        }
+                    }
+
+                    // Otorgar rol del nivel actual
+                    const levelRole = await LevelRole.findOne({
+                        guildId: message.guild.id,
+                        level: level.level,
+                    });
+
+                    if (levelRole) {
+                        const role = await message.guild.roles.fetch(levelRole.roleId);
+                        if (role) {
+                            await message.member.roles.add(role);
+                            message.channel.send(
+                                `🎉 ${message.member} ha obtenido el rol ${role}!`
+                            );
+                        }
+                    }
+                } catch (roleError) {
+                    console.log(`Error al otorgar rol por nivel: ${roleError}`);
+                }
             }
 
             await level.save();
