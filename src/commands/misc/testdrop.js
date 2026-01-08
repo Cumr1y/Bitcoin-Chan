@@ -15,12 +15,14 @@ module.exports = {
             return interaction.reply({ content: "Ya hay un drop activo en este canal.", flags: MessageFlags.Ephemeral });
         }
 
-        // Generar cantidad aleatoria
+        // Generar cantidad aleatoria - Mucho más valioso
         let amount;
-        if (Math.random() < 0.9) {
-            amount = Math.floor(Math.random() * 10) + 1;
+        if (Math.random() < 0.85) {
+            // 85% de chance: Drop normal (100-500 BTC)
+            amount = Math.floor(Math.random() * 400) + 100;
         } else {
-            amount = Math.floor(Math.random() * 90) + 11;
+            // 15% de chance: Drop raro (500-2000 BTC)
+            amount = Math.floor(Math.random() * 1500) + 500;
         }
 
         const embed = new EmbedBuilder()
@@ -70,12 +72,14 @@ module.exports = {
             return message.channel.send("Ya hay un drop activo en este canal.");
         }
 
-        // Generar cantidad aleatoria
+        // Generar cantidad aleatoria - Mucho más valioso
         let amount;
-        if (Math.random() < 0.9) {
-            amount = Math.floor(Math.random() * 10) + 1;
+        if (Math.random() < 0.85) {
+            // 85% de chance: Drop normal (100-500 BTC)
+            amount = Math.floor(Math.random() * 400) + 100;
         } else {
-            amount = Math.floor(Math.random() * 90) + 11;
+            // 15% de chance: Drop raro (500-2000 BTC)
+            amount = Math.floor(Math.random() * 1500) + 500;
         }
 
         const embed = new EmbedBuilder()
