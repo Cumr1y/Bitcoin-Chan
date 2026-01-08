@@ -20,16 +20,16 @@ module.exports = {
             required: true,
         },
         {
-            name: "ganadores",
-            description: "Cantidad de ganadores (default: 1, max: 10)",
-            type: 4,
-            required: false,
-        },
-        {
             name: "duracion",
             description: "Duración (ej: '2d' para 2 días, '6h' para 6 horas, '30m' para 30 minutos)",
             type: 3,
             required: true,
+        },
+        {
+            name: "ganadores",
+            description: "Cantidad de ganadores (default: 1, max: 10)",
+            type: 4,
+            required: false,
         },
     ],
     callback: async (client, interaction) => {
