@@ -11,6 +11,50 @@ module.exports = {
     description: "Gestiona los roles que se otorgan por nivel",
     deleted: false,
     testOnly: false,
+    options: new (require("discord.js")).SlashCommandBuilder()
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName("add")
+                .setDescription("Añade un rol para un nivel específico")
+                .addIntegerOption((option) =>
+                    option
+                        .setName("level")
+                        .setDescription("El nivel requerido")
+                        .setRequired(true)
+                        .setMinValue(1)
+                        .setMaxValue(999)
+                )
+                .addRoleOption((option) =>
+                    option
+                        .setName("rol")
+                        .setDescription("El rol a otorgar")
+                        .setRequired(true)
+                )
+        )
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName("remove")
+                .setDescription("Remueve el rol de un nivel")
+                .addIntegerOption((option) =>
+                    option
+                        .setName("level")
+                        .setDescription("El nivel a remover")
+                        .setRequired(true)
+                        .setMinValue(1)
+                        .setMaxValue(999)
+                )
+        )
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName("list")
+                .setDescription("Muestra todos los roles configurados por nivel")
+        )
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName("sync")
+                .setDescription("Sincroniza todos los usuarios existentes con sus roles de nivel")
+        )
+        .toJSON(),
     callback: async (client, interaction) => {
         if (!interaction.inGuild()) {
             return interaction.reply({
@@ -198,52 +242,5 @@ module.exports = {
                 flags: MessageFlags.Ephemeral,
             });
         }
-    },
-
-    // Configuración del SlashCommand
-    optionsBuilder: (builder) => {
-        return builder
-            .addSubcommand((subcommand) =>
-                subcommand
-                    .setName("add")
-                    .setDescription("Añade un rol para un nivel específico")
-                    .addIntegerOption((option) =>
-                        option
-                            .setName("level")
-                            .setDescription("El nivel requerido")
-                            .setRequired(true)
-                            .setMinValue(1)
-                            .setMaxValue(999)
-                    )
-                    .addRoleOption((option) =>
-                        option
-                            .setName("rol")
-                            .setDescription("El rol a otorgar")
-                            .setRequired(true)
-                    )
-            )
-            .addSubcommand((subcommand) =>
-                subcommand
-                    .setName("remove")
-                    .setDescription("Remueve el rol de un nivel")
-                    .addIntegerOption((option) =>
-                        option
-                            .setName("level")
-                            .setDescription("El nivel a remover")
-                            .setRequired(true)
-                            .setMinValue(1)
-                            .setMaxValue(999)
-                    )
-            )
-            .addSubcommand((subcommand) =>
-                subcommand
-                    .setName("list")
-                    .setDescription("Muestra todos los roles configurados por nivel")
-            )
-            .addSubcommand((subcommand) =>
-                subcommand
-                    .setName("sync")
-                    .setDescription("Sincroniza todos los usuarios existentes con sus roles de nivel")
-            );
     },
 };
