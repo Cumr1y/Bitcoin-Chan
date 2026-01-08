@@ -48,11 +48,11 @@ Keep your server safe and organized with powerful moderation features:
 ## Steps
 1. **Clone the repository:**
 ```ruby
-git clone https://github.com/Cumr1y/kaori-bot.git
+git clone https://github.com/Cumr1y/Bitcoin-Chan.git
 ```
 2. **Navigate to the project directory:**
 ```ruby
-cd kaori-bot
+cd BTC
 ```
 3. **Install dependencies:**
 ```ruby
