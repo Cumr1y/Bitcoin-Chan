@@ -18,3 +18,7 @@ task = "shell.exec"
 args = "npm start"
 localPort = 3000
 externalPort = 80
+
+[[ports]]
+localPort = 3000
+externalPort = 80
