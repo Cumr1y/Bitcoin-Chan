@@ -7,7 +7,7 @@ module.exports = {
     testOnly: true,
     callback: async (client, interaction) => {
         // Defer reply para evitar timeout en operaciones largas
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+        await interaction.deferReply();
 
         if (!interaction.inGuild()) {
             return interaction.editReply({ content: "Solo puedes usar este comando en un servidor." });
@@ -53,7 +53,13 @@ module.exports = {
 
         client.activeDrops.delete(dropChannelId);
 
-        const response = await interaction.editReply(`¡Felicidades! ${interaction.user.username} ha reclamado el drop de **${drop.amount.toLocaleString()} BTC**.`);
+        const embed = new EmbedBuilder()
+            .setTitle("✅ Drop Reclamado")
+            .setDescription(`**${interaction.user.username}** ha reclamado el drop de **${drop.amount.toLocaleString()} BTC**.`)
+            .setColor(0x00FF00)
+            .setTimestamp();
+
+        const response = await interaction.editReply({ embeds: [embed] });
         setTimeout(() => response.delete().catch(() => null), 5000);
     },
 };
